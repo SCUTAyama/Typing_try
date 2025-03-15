@@ -67,14 +67,49 @@ class KatakanaHandakuonGroup(BaseButtonGroup):
 class HiraganaSmallGroup(BaseButtonGroup):
     def __init__(self):
         keyboard_layout = Keyboard_Layout()
-        super().__init__(keyboard_layout.small_hiragana, (3, 3))
+        super().__init__(keyboard_layout.small_hiragana, (3, 5))
 
 class KatakanaSmallGroup(BaseButtonGroup):
     def __init__(self):
         keyboard_layout = Keyboard_Layout()
-        super().__init__(keyboard_layout.small_katakana, (3, 3))
+        super().__init__(keyboard_layout.small_katakana, (3, 5))
 
 class SpecialCharacterGroup(BaseButtonGroup):
     def __init__(self):
         keyboard_layout = Keyboard_Layout()
         super().__init__(keyboard_layout.special, (1, 1))
+
+class DisplayGroupContainer(QWidget):
+    text_signal = pyqtSignal(str)
+    def __init__(self,group_switch_mode = "Hiragana"):
+        super().__init__()
+        self.init_ui(group_switch_mode)
+    
+    def init_ui(self,group_switch_mode):
+        layout = QGridLayout()
+        self.setLayout(layout)
+        
+        if group_switch_mode == "Hiragana":
+            seion = HiraganaSeionGroup()
+            dakuon = HiraganaDakuonGroup()
+            handakuon = HiraganaHandakuonGroup()
+            small = HiraganaSmallGroup()
+        else:
+            seion = KatakanaSeionGroup()
+            dakuon = KatakanaDakuonGroup()
+            handakuon = KatakanaHandakuonGroup()
+            small = KatakanaSmallGroup()
+        
+
+        seion.text_signal.connect(self.forward_signal)
+        dakuon.text_signal.connect(self.forward_signal)
+        handakuon.text_signal.connect(self.forward_signal)
+        small.text_signal.connect(self.forward_signal)
+
+        layout.addWidget(seion, 0, 0, 11, 5)      
+        layout.addWidget(dakuon, 0, 5, 4, 5)       
+        layout.addWidget(handakuon, 4, 5, 2, 5)    
+        layout.addWidget(small, 6, 5, 5, 5)         
+
+    def forward_signal(self,text):
+        self.text_signal.emit(text)

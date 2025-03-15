@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLineEdit, QPushButton
 from PyQt5.QtCore import Qt
 from .ui_constants import UI_Constants
-from .button_group_container import HiraganaSeionGroup, KatakanaSeionGroup
+from .button_group_container import *
 
 class TypingUI(QMainWindow):
     def __init__(self):
@@ -29,10 +29,10 @@ class TypingUI(QMainWindow):
         self.display_unit.setAlignment(Qt.AlignCenter)
         self.grid.addWidget(self.display_unit,0,0,1,4)
 
-        #Initialize the layout as hira
-        self.current_seion_group = HiraganaSeionGroup()
-        self.current_seion_group.text_signal.connect(self.text_display)
-        self.grid.addWidget(self.current_seion_group,1,0,3,5)
+        #Initialize the layout 
+        self.current_group = DisplayGroupContainer()
+        self.current_group.text_signal.connect(self.text_display)
+        self.grid.addWidget(self.current_group,1,0,12,10)
 
 
         #Mode Switch
@@ -46,14 +46,14 @@ class TypingUI(QMainWindow):
         self.display_unit.setText(self.displaying_text)
 
     def switch_mode(self):
-        self.current_seion_group.setParent(None)
+        self.current_group.setParent(None)
         if self.input_mode == 'Hiragana':
             self.input_mode = 'Katakana'
-            self.current_seion_group = KatakanaSeionGroup()
+            self.current_group = DisplayGroupContainer(group_switch_mode="Katakana")
             self.mode_switch.setText("Kata")
         else :
             self.input_mode = 'Hiragana'
-            self.current_seion_group = HiraganaSeionGroup()       
+            self.current_group = DisplayGroupContainer(group_switch_mode="Hiragana")       
             self.mode_switch.setText("Hira")
-        self.current_seion_group.text_signal.connect(self.text_display)
-        self.grid.addWidget(self.current_seion_group,1,0,3,5)
+        self.current_group.text_signal.connect(self.text_display)
+        self.grid.addWidget(self.current_group,1,0,12,10)
