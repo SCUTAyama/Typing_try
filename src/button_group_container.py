@@ -1,10 +1,14 @@
 from PyQt5.QtWidgets import QWidget,QGridLayout,QPushButton
+from PyQt5.QtCore import pyqtSignal
 from .letter_layout import *
 
 class ButtonGroup_base(QWidget):
+    text_signal = pyqtSignal(str)
     def on_button_clicked(self):
-        #to do
-        raise NotImplementedError
+        button = self.sender()
+        if button:
+            self.text_signal.emit(button.text())
+
 
 class ButtonGroup_hina_sei(ButtonGroup_base):
     def __init__(self):
@@ -21,6 +25,7 @@ class ButtonGroup_hina_sei(ButtonGroup_base):
         for position, name in zip(positions,keyboard_layout.seion_hinagana):
             placeholder = QWidget()
             button = QPushButton(name)
+            button.clicked.connect(self.on_button_clicked)
             if name != '':
                 self.buttons.append(button)
                 grid.addWidget(button, position[0], position[1])

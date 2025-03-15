@@ -1,3 +1,4 @@
+from typing import Text
 from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout,QLineEdit,QPushButton
 from PyQt5.QtCore import Qt
 from .ui_constants import *
@@ -6,7 +7,7 @@ from .button_group_container import *
 class TypingUI(QMainWindow):
     def __init__(self):
         super(__class__, self).__init__()
-
+        self.displaying_text = ''
         self.initUI()
 
     def initUI(self):
@@ -30,4 +31,10 @@ class TypingUI(QMainWindow):
 
         #Group of hinagana_seion
         hana_sei = ButtonGroup_hina_sei()
+        hana_sei.text_signal.connect(self.text_display)
         grid.addWidget(hana_sei,1,0,3,4)
+
+
+    def text_display(self,text):
+        self.displaying_text += text
+        self.display_unit.setText(self.displaying_text)
