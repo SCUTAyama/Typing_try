@@ -1,8 +1,7 @@
-from typing import Text
-from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout,QLineEdit,QPushButton
+from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLineEdit, QPushButton
 from PyQt5.QtCore import Qt
-from .ui_constants import *
-from .button_group_container import *
+from .ui_constants import UI_Constants
+from .button_group_container import HiraganaSeionGroup
 
 class TypingUI(QMainWindow):
     def __init__(self):
@@ -11,8 +10,7 @@ class TypingUI(QMainWindow):
         self.initUI()
 
     def initUI(self):
-
-        #b = ButtonGroup_hina_sei()
+        #b = ButtonGroup_hira_sei()
 
         ui_constants = UI_Constants()
         self.setWindowTitle(ui_constants.MAINWINDOW_TITLE)
@@ -29,10 +27,10 @@ class TypingUI(QMainWindow):
         self.display_unit.setAlignment(Qt.AlignCenter)
         grid.addWidget(self.display_unit,0,0,1,4)
 
-        #Group of hinagana_seion
-        hana_sei = ButtonGroup_hina_sei()
-        hana_sei.text_signal.connect(self.text_display)
-        grid.addWidget(hana_sei,1,0,3,4)
+        #Group of hiragana_seion
+        hiragana_seion = HiraganaSeionGroup()
+        hiragana_seion.text_signal.connect(self.text_display)
+        grid.addWidget(hiragana_seion,1,0,3,4)
 
 
     def text_display(self,text):
