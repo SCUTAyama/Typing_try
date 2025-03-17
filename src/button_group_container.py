@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton
 from PyQt5.QtCore import pyqtSignal
 from .letter_layout import Keyboard_Layout
+from .ui_constants import *
 
 class BaseButtonGroup(QWidget):
     text_signal = pyqtSignal(str)
@@ -22,11 +23,17 @@ class BaseButtonGroup(QWidget):
             return
         positions = [(i,j) for i in range(self.grid_size[0]) for j in range(self.grid_size[1])]
         grid = QGridLayout()
+        grid.setSpacing(0)
+        grid.setContentsMargins(0, 0, 0, 0)
         self.setLayout(grid)
+        ui_constants = UI_Constants() 
+
+        button_style = ui_constants.BASE_BUTTON_STYLE
 
         for position, name in zip(positions, self.layout_data):
             if name != '':
                 button = QPushButton(name)
+                button.setStyleSheet(button_style)
                 button.clicked.connect(self.on_button_clicked)
                 self.buttons.append(button)
                 grid.addWidget(button, position[0], position[1])
@@ -109,7 +116,7 @@ class DisplayGroupContainer(QWidget):
         layout.addWidget(seion, 0, 0, 11, 5)      
         layout.addWidget(dakuon, 0, 5, 4, 5)       
         layout.addWidget(handakuon, 4, 5, 2, 5)    
-        layout.addWidget(small, 6, 5, 5, 5)         
+        layout.addWidget(small, 6, 5, 3, 5)         
 
     def forward_signal(self,text):
         self.text_signal.emit(text)

@@ -12,11 +12,12 @@ class TypingUI(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        #b = ButtonGroup_hira_sei()
-
+        #Window Settings
         ui_constants = UI_Constants()
         self.setWindowTitle(ui_constants.MAINWINDOW_TITLE)
         self.setGeometry(*ui_constants.WINDOW_GEOMETRY)
+
+        self.setStyleSheet(ui_constants.UI_STYLE)
 
         #Centrol Widget and Grid
         central_widget = QWidget(self)
@@ -27,7 +28,7 @@ class TypingUI(QMainWindow):
         #Displace Area
         self.display_unit = QLineEdit()
         self.display_unit.setAlignment(Qt.AlignCenter)
-        self.grid.addWidget(self.display_unit,0,0,1,4)
+        self.grid.addWidget(self.display_unit,0,0,1,9)
 
         #Initialize the layout 
         self.current_group = DisplayGroupContainer()
@@ -37,8 +38,9 @@ class TypingUI(QMainWindow):
 
         #Mode Switch
         self.mode_switch = QPushButton("Hira")
+        self.mode_switch.setStyleSheet(ui_constants.SWITCH_BUTTON_STYLE)
         self.mode_switch.clicked.connect(self.switch_mode)
-        self.grid.addWidget(self.mode_switch,0,4,1,1)
+        self.grid.addWidget(self.mode_switch,0,9,1,1)
 
 
     def text_display(self,text):
